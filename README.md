@@ -1,27 +1,64 @@
-# Authapp
+# Autenticación Auth0 - Angular 13+
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.2.
+Instalar el SDK de Auth0 Angular
 
-## Development server
+    npm install @auth0/auth0-angular
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Registrar y configurar el `AuthModule` en el archivo `app.modules.ts`
 
-## Code scaffolding
+    import { AuthModule } from '@auth0/auth0-angular';
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+    @NgModule({
+        ...
+        imports: [
+            AuthModule.forRoot({
+                domain: 'dev-aranibar.us.auth0.com',
+                clientId: 'nn52dbYcxhHsZdOE33elQSJsRBnDy2Wm',
+                cacheLocation: 'localstorage',
+                useRefreshTokens: true
+            }),
+        ],
+    })
 
-## Build
+Crear las funciones login y logout mediante la importación `AuthService` en el archivo `navbar.components.ts`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+    import { AuthService } from '@auth0/auth0-angular';
 
-## Running unit tests
+    export class NavbarComponent {
+    constructor(public auth: AuthService) {}
+        login() {
+            this.auth.loginWithRedirect();
+        }
+        logout() {
+            this.auth.logout();
+        }
+    }
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Insertar los buttons en el archivo `navbar.components.html` con sus respectivas funciones
 
-## Running end-to-end tests
+    <div>
+        <button (click)="login()" *ngIf="!(auth.isAuthenticated$ | async)">
+            Login
+        </button>
+        <button (click)="logout()" *ngIf="(auth.isAuthenticated$ | async)">
+            Logout
+        </button>
+    </div>
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Para proteger una ruta selecionamos el módulo y configuramos el constructor mediante la importación `AuthService`
 
-## Further help
+    import { AuthService } from '@auth0/auth0-angular';
+    constructor(public auth: AuthService) {}
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Luego en el Sistema de rutas del archivo `app.routes.ts` configuramos la ruta mediante la importación `AuthGuard`
+
+    Import { AuthGuard } from '@auth0/auth0-angular';
+
+    const routes: Routes = [
+        {
+            path: 'example',
+            component: ExampleComponent,
+            canActivate: [AuthGuard], 
+        },
+
+    ];

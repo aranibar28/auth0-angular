@@ -7,6 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { PricesComponent } from './components/prices/prices.component';
 import { ProtectedComponent } from './components/protected/protected.component';
+import { AuthModule } from '@auth0/auth0-angular';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,13 @@ import { ProtectedComponent } from './components/protected/protected.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AuthModule.forRoot({
+      domain: 'dev-aranibar.us.auth0.com',
+      clientId: 'nn52dbYcxhHsZdOE33elQSJsRBnDy2Wm',
+      cacheLocation: 'localstorage',
+      useRefreshTokens: true
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
