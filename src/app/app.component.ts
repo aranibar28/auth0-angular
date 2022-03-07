@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HeroeModel } from './models/heroe.model';
 
 @Component({
   selector: 'app-root',

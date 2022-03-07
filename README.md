@@ -1,4 +1,4 @@
-# Autenticación Auth0 - Angular 13+
+# Autenticación Auth0 y CRUD Firebase - Angular 13+
 
 Instalar el SDK de Auth0 Angular
 
@@ -58,7 +58,7 @@ Luego en el Sistema de rutas del archivo `app.routes.ts` configuramos la ruta me
         {
             path: 'example',
             component: ExampleComponent,
-            canActivate: [AuthGuard], 
+            canActivate: [AuthGuard],
         },
 
     ];
